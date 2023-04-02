@@ -1,4 +1,7 @@
 import * as fs from "fs";
+import { IEnumInfo } from "./enum-info.interface";
+import { IInterfaceInfo } from "./interface-info.interface";
+import { EType } from "./type.enum";
 
 export async function getAllTypeScriptFilesAsync(
   dirPath: string,
@@ -29,17 +32,6 @@ export async function getAllTypeScriptFilesFromMutlipleDirectoriesAsync(
   ).then((data) => data.flat());
 }
 
-export enum EType {
-  interface = "interface",
-  enum = "enum",
-  type = "type",
-}
-export interface IEnumInfo {
-  name: string;
-  path: string;
-  type: EType;
-  members: Array<{ name: string; value: string }>;
-}
 export async function findAllEnumsInFileAsync(
   filePath: string
 ): Promise<Array<IEnumInfo>> {
@@ -75,12 +67,6 @@ export async function findAllEnumsInFileAsync(
   return res;
 }
 
-export interface IInterfaceInfo {
-  name: string;
-  path: string;
-  type: EType;
-  properties: Array<{ name: string; type: string }>;
-}
 export async function findAllInterfacesInFileAsync(
   filePath: string
 ): Promise<Array<IInterfaceInfo>> {
