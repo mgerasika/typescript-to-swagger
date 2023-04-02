@@ -1,6 +1,6 @@
 ## Find all interfaces into project diractory
 
-### Interface
+### Example Interface
 
 ```
 interface IUser {
@@ -26,14 +26,14 @@ getInterfaceInfo({ dir: ['./src'] }).then((res) => {
 		"type": "interface",
 		"path": "./src/model/user.dto.ts",
 		"properties": [
-		{
-			"name": "firstName",
-			"type": "string"
-		},
-		{
-			"name": "isActive",
-			"type": "boolean"
-		}
+			{
+				"name": "firstName",
+				"type": "string"
+			},
+			{
+				"name": "isActive",
+				"type": "boolean"
+			}
 		]
 	},
 ...
