@@ -1,4 +1,13 @@
-## Typescript interface info
+## Find all interfaces into project diractory
+
+### Interface
+
+```
+interface IUser {
+	firstName: string;
+	isActive: boolean;
+}
+```
 
 ### Usage example
 
@@ -6,7 +15,6 @@
 getInterfaceInfo({ dir: ['./src'] }).then((res) => {
     console.log(JSON.stringify(res.interfaces, null, 2));
 });
-}
 ```
 
 ### Response
@@ -14,19 +22,20 @@ getInterfaceInfo({ dir: ['./src'] }).then((res) => {
 ```
 [...
 	{
-		"name": "ICustomerByIdDto",
+		"name": "IUserDto",
 		"type": "interface",
-		"path": "./src/api-admin/model/customer-admin.dto.ts",
+		"path": "./src/model/user.dto.ts",
 		"properties": [
 		{
-			"name": "hasPasswordAuth",
-			"type": "boolean | undefined"
+			"name": "firstName",
+			"type": "string"
 		},
 		{
-			"name": "customer",
-			"type": "ICustomerAdminDto"
+			"name": "isActive",
+			"type": "boolean"
 		}
 		]
 	},
-...]
+...
+]
 ```
