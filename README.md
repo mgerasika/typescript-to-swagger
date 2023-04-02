@@ -1,4 +1,4 @@
-## Find all interfaces into project diractory
+## Find all interfaces into project directory and return information about it.
 
 ### Example Interface
 
