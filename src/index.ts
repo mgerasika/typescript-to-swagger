@@ -4,7 +4,7 @@ import { IInterfaceInfo } from "./interface-info.interface";
 import {
   findAllEnumsInFileAsync,
   findAllInterfacesInFileAsync,
-  getAllTypeScriptFilesFromMutlipleDirectoriesAsync as getAllTypeScriptFilesFromMultipleDirectoriesAsync,
+  getAllTypeScriptFilesFromMultipleDirectoriesAsync,
 } from "./utils";
 export * from "./utils";
 
@@ -18,6 +18,7 @@ export const getInterfaceInfo = ({ dir }: IProps): Promise<IInfo> => {
     let enums: IEnumInfo[] = [];
     getAllTypeScriptFilesFromMultipleDirectoriesAsync(dir)
       .then((tsFiles) => {
+        console.log("tsFiles", tsFiles);
         return Promise.all(
           tsFiles.map(async (filePath) => {
             const i = await findAllInterfacesInFileAsync(filePath);
