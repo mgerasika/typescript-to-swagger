@@ -24,6 +24,7 @@ export function getInterfaceProperties(
       Object.keys(json).map((key) => {
         res.push({
           name: key,
+          // eslint-disable-next-line no-useless-escape
           type: JSON.stringify(json[key]).replace(/\"/g, ""),
         });
       });
