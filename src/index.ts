@@ -39,7 +39,3 @@ export const getInterfaceInfo = ({ dir }: IProps): Promise<IInfo> => {
       });
   });
 };
-
-getInterfaceInfo({ dir: ["./src/api-admin"] }).then((res) => {
-  console.log(JSON.stringify(res.interfaces, null, 2));
-});
