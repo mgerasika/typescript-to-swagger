@@ -1,5 +1,4 @@
 import { IInterfaceInfo } from "../interface-info.interface";
-import { IPropertyInfo } from "../property-info.interface";
 import { EType } from "../type.enum";
 import { getInterfaceProperties } from "./get-interface-properties.util";
 
@@ -13,7 +12,7 @@ export function getInterfaceInfo(
 
   while ((match = regex.exec(interfaceContent)) !== null) {
     const interfaceName = match[1];
-    const extendedInterfaces = match[2] ? match[2].split(/\s*,\s*/) : [];
+    // const extendedInterfaces = match[2] ? match[2].split(/\s*,\s*/) : [];
 
     return {
       name: interfaceName,

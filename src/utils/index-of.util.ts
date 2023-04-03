@@ -4,7 +4,7 @@ export const indexOf = (
   index: number
 ): number => {
   let i = 0;
-  let tmp = fileContent;
+  const tmp = fileContent;
   let resIndex = 0;
   let prevPosition = 0;
   do {

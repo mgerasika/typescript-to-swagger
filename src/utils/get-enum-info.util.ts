@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import { IEnumInfo } from "../enum-info.interface";
 import { EType } from "../type.enum";
 

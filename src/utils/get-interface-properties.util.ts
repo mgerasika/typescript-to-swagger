@@ -1,6 +1,4 @@
-import { IInterfaceInfo } from "../interface-info.interface";
 import { IPropertyInfo } from "../property-info.interface";
-import { EType } from "../type.enum";
 
 export function getInterfaceProperties(
   interfaceContent: string

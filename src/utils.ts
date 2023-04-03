@@ -1,8 +1,6 @@
 import * as fs from "fs";
-import { NewLineKind } from "typescript";
 import { IEnumInfo } from "./enum-info.interface";
 import { IInterfaceInfo } from "./interface-info.interface";
-import { EType } from "./type.enum";
 import { findBody } from "./utils/find-body.util";
 import { getEnumInfo } from "./utils/get-enum-info.util";
 import { getInterfaceInfo } from "./utils/get-interface-info.util";

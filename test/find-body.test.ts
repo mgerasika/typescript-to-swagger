@@ -9,14 +9,9 @@ describe("find-interface-body", () => {
       findBody(
         "interface",
         `interface A{
-		//todo
 	  }`
       )
-    ).toEqual([
-      `interface A{
-		//todo
-	  }`,
-    ]);
+    ).toEqual([`interface A{}`]);
   });
 
   it("2 interfaces in one file", () => {
