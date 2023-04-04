@@ -1,6 +1,6 @@
 {
     "name": "typescript-to-swagger",
-    "version": "0.1.11",
+    "version": "0.1.12",
     "private": false,
     "main": "dist/cjs/index.js",
     "files": [
