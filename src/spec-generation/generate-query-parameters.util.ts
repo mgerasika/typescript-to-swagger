@@ -22,8 +22,10 @@ export const generateQueryParameters = ({ query }: IProps): any[] => {
     return {
       name: getSpecPropertyName(key),
       in: "query",
-      type: getSpecTypeFromJsType(query[key]),
       required: !key.includes("?"),
+      schema: {
+        type: getSpecTypeFromJsType(query[key]),
+      },
     };
   });
 };

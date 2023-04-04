@@ -32,4 +32,5 @@ export const generateResponse = ({ route, allSpec }: IProps) => {
   const responseInterface = allSpec.interfaces.find(
     (i) => i.id === route.responseInterfaceId
   );
+  return [];
 };

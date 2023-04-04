@@ -22,8 +22,10 @@ export const generatePathParameters = ({ params }: IProps): any[] => {
     return {
       name: getSpecPropertyName(key),
       in: "path",
-      type: getSpecTypeFromJsType(params[key]),
       required: !key.includes("?"),
+      schema: {
+        type: getSpecTypeFromJsType(params[key]),
+      },
     };
   });
 };
