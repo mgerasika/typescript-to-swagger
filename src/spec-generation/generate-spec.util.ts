@@ -1,5 +1,3 @@
-import { IInfo } from "../interfaces/info.interface";
-import { IRouteInfo } from "../interfaces/route-info.interface";
 import { getSpecInfoAsync } from "../utils/get-spec-info";
 import { generateDefinitions } from "./generate-definitions.util";
 import { generateParameters } from "./generate-parameters.util";

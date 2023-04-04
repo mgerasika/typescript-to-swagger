@@ -1,6 +1,5 @@
 import { IInfo } from "../interfaces/info.interface";
 import { IRouteInfo } from "../interfaces/route-info.interface";
-import { getSpecInfoAsync } from "../utils/get-spec-info";
 
 interface IProps {
   allSpec: IInfo;

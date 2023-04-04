@@ -1,11 +1,7 @@
 import { IInfo } from "../interfaces/info.interface";
 import { IInterfaceInfo } from "../interfaces/interface-info.interface";
-import { IRouteInfo } from "../interfaces/route-info.interface";
-import { getSpecInfoAsync } from "../utils/get-spec-info";
 import { getSpecTypeFromJsType } from "../utils/get-spec-type-from-js-type.util";
 import { isExternalDefinition } from "../utils/is-external-definition.util";
-import { generateParameters } from "./generate-parameters.util";
-import { generateResponse } from "./generate-response.util";
 
 interface IProps {
   allSpec: IInfo;
@@ -24,9 +20,9 @@ export const generateDefinitions = ({ allSpec }: IProps) => {
         acc = { ...acc, ...generateDefinition({ interfaceInfo }) };
       }
     }
-    const responseInterface = allSpec.interfaces.find(
-      (i) => i.id === route.responseInterfaceId
-    );
+    // const responseInterface = allSpec.interfaces.find(
+    //   (i) => i.id === route.responseInterfaceId
+    // );
 
     if (isExternalDefinition(requestInterface?.data)) {
     }
