@@ -24,12 +24,12 @@ export const generateSpecAsync = ({ dir }: IProps): Promise<any> => {
             };
         }, {});
 
-        const definitions = generateDefinitions({ allSpec });
+        const schemas = generateDefinitions({ allSpec });
 
         return {
             paths,
             components: {
-                schemas: { ...definitions },
+                schemas: { ...schemas },
             },
         };
     });

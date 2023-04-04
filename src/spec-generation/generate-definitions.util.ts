@@ -1,35 +1,53 @@
-import { IInfo } from "../interfaces/info.interface";
-import { IInterfaceInfo } from "../interfaces/interface-info.interface";
-import { getSpecTypeFromJsType } from "../utils/get-spec-type-from-js-type.util";
-import { isExternalDefinition } from "../utils/is-external-definition.util";
+import { IEnumInfo } from '../interfaces/enum-info.interface';
+import { IInfo } from '../interfaces/info.interface';
+import { IInterfaceInfo } from '../interfaces/interface-info.interface';
+import { getSpecTypeFromJsType } from '../utils/get-spec-type-from-js-type.util';
+import { isExternalDefinition } from '../utils/is-external-definition.util';
 
 interface IProps {
-  allSpec: IInfo;
+    allSpec: IInfo;
 }
 
-export const generateDefinitions = ({ allSpec }: IProps) => {
-  return allSpec.routes.reduce((acc, route) => {
-    const requestInterface = allSpec.interfaces.find(
-      (i) => i.id === route.requestInterfaceId
-    );
-
-    const body = requestInterface?.data?.body;
+const addSchemasRecursive = ({ body, result, allSpec }: { allSpec: IInfo; body: any; result: any }) => {
     if (isExternalDefinition(body)) {
-      const interfaceInfo = allSpec.interfaces.find((i) => i.name === body);
-      if (interfaceInfo) {
-        acc = { ...acc, ...generateDefinition({ interfaceInfo }) };
-      }
+        const interfaceInfo = allSpec.interfaces.find((i) => i.name === body);
+        if (interfaceInfo) {
+            result = { ...result, ...generateDefinition({ interfaceInfo }) };
+            Object.values(interfaceInfo.data).forEach((value) => {
+                if (isExternalDefinition(value)) {
+                    result = addSchemasRecursive({ body: value, allSpec, result });
+                }
+            });
+        } else {
+            const enumInfo = allSpec.enums.find((i) => i.name === body);
+            if (enumInfo) {
+                result = { ...result, ...generateDefinition({ enumInfo: enumInfo }) };
+                Object.values(enumInfo.data).forEach((value) => {
+                    if (isExternalDefinition(value)) {
+                        result = addSchemasRecursive({ body: value, allSpec, result });
+                    }
+                });
+            }
+        }
     }
-    // const responseInterface = allSpec.interfaces.find(
-    //   (i) => i.id === route.responseInterfaceId
-    // );
+    return result;
+};
+export const generateDefinitions = ({ allSpec }: IProps) => {
+    return allSpec.routes.reduce((result, route) => {
+        const requestInterface = allSpec.interfaces.find((i) => i.id === route.requestInterfaceId);
 
-    if (isExternalDefinition(requestInterface?.data)) {
-    }
-    return {
-      ...acc,
-    };
-  }, {});
+        const body = requestInterface?.data?.body;
+        result = addSchemasRecursive({ result: result, body, allSpec });
+        // const responseInterface = allSpec.interfaces.find(
+        //   (i) => i.id === route.responseInterfaceId
+        // );
+
+        if (isExternalDefinition(requestInterface?.data)) {
+        }
+        return {
+            ...result,
+        };
+    }, {});
 };
 
 /*
@@ -69,23 +87,35 @@ export const generateDefinitions = ({ allSpec }: IProps) => {
     },
 */
 export const generateDefinition = ({
-  interfaceInfo,
+    interfaceInfo,
+    enumInfo,
 }: {
-  interfaceInfo: IInterfaceInfo;
+    interfaceInfo?: IInterfaceInfo;
+    enumInfo?: IEnumInfo;
 }) => {
-  return {
-    [interfaceInfo.name]: {
-      type: "object",
-      properties: interfaceInfo.data
-        ? Object.keys(interfaceInfo.data).reduce((acc, key) => {
-            return {
-              ...acc,
-              [key]: {
-                type: getSpecTypeFromJsType(interfaceInfo.data[key]),
-              },
-            };
-          }, {})
-        : undefined,
-    },
-  };
+    if (interfaceInfo) {
+        return {
+            [interfaceInfo.name]: {
+                type: 'object',
+                properties: interfaceInfo.data
+                    ? Object.keys(interfaceInfo.data).reduce((acc, key) => {
+                          return {
+                              ...acc,
+                              [key]: {
+                                  type: getSpecTypeFromJsType(interfaceInfo.data[key]),
+                              },
+                          };
+                      }, {})
+                    : undefined,
+            },
+        };
+    }
+    if (enumInfo) {
+        return {
+            [enumInfo.name]: {
+                type: 'string',
+                enum: Object.values(enumInfo.data),
+            },
+        };
+    }
 };
