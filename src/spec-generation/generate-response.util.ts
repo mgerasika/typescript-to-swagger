@@ -26,10 +26,10 @@ interface IProps {
 }
 */
 export const generateResponse = ({ route, allSpec }: IProps) => {
-//   const requestInterface = allSpec.interfaces.find(
-//     (i) => i.id === route.requestInterfaceId
-//   );
-//   const responseInterface = allSpec.interfaces.find(
-//     (i) => i.id === route.responseInterfaceId
-//   );
+  const requestInterface = allSpec.interfaces.find(
+    (i) => i.id === route.requestInterfaceId
+  );
+  const responseInterface = allSpec.interfaces.find(
+    (i) => i.id === route.responseInterfaceId
+  );
 };
