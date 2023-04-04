@@ -1,5 +1,5 @@
 import { expect } from "@jest/globals";
-import { IInterfaceInfo } from "../src/interface-info.interface";
+import { IInterfaceInfo } from "../src/interfaces/interface-info.interface";
 import { getInterfaceInfo } from "../src/utils/get-interface-info.util";
 
 describe("get-interface-info", () => {

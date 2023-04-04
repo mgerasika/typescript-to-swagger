@@ -1,5 +1,5 @@
-import { IInterfaceInfo } from "../interface-info.interface";
-import { EType } from "../type.enum";
+import { IInterfaceInfo } from "../interfaces/interface-info.interface";
+import { EType } from "../enums/type.enum";
 import { getInterfaceProperties } from "./get-interface-properties.util";
 import { makeId } from "./make-id.util";
 

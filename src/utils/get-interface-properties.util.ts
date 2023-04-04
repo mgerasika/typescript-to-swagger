@@ -1,4 +1,3 @@
-
 export function getInterfaceProperties(interfaceContent: string): any {
   let match: RegExpExecArray | null;
 
@@ -9,7 +8,7 @@ export function getInterfaceProperties(interfaceContent: string): any {
     let data =
       "{" +
       withoutComments
-        .replace(/\b(\w+)\b/g, '"$1"')
+        .replace(/(\w+\??)/g, '"$1"')
         .replace(/;/g, ",")
         .replace(/\s/g, "") +
       "}";

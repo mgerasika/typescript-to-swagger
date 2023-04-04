@@ -1,5 +1,5 @@
-import { getInterfaceInfo } from ".";
+import { getSpecInfoAsync } from ".";
 
-getInterfaceInfo({ dir: ["./src/api-admin"] }).then((res) => {
+getSpecInfoAsync({ dir: ["./src/api-admin"] }).then((res) => {
   console.log(JSON.stringify(res.interfaces, null, 2));
 });

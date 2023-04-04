@@ -1,6 +1,6 @@
-import { EType } from "./type.enum";
+import { EType } from "../enums/type.enum";
 
-export interface IEnumInfo {
+export interface IInterfaceInfo {
   id: string;
   name: string;
   filePath: string;

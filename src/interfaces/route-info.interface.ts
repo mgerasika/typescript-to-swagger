@@ -1,4 +1,4 @@
-import { EType } from "./type.enum";
+import { EType } from "../enums/type.enum";
 
 export interface IRouteInfo {
   httpMethod: string;

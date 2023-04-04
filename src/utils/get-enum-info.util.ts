@@ -1,5 +1,5 @@
-import { IEnumInfo } from "../enum-info.interface";
-import { EType } from "../type.enum";
+import { IEnumInfo } from "../interfaces/enum-info.interface";
+import { EType } from "../enums/type.enum";
 import { makeId } from "./make-id.util";
 
 export function getEnumInfo(

@@ -1,11 +1,11 @@
 import * as fs from "fs";
-import { IEnumInfo } from "./enum-info.interface";
-import { IInterfaceInfo } from "./interface-info.interface";
-import { IRouteInfo } from "./route-info.interface";
-import { findBody } from "./utils/find-body.util";
-import { getEnumInfo } from "./utils/get-enum-info.util";
-import { getInterfaceInfo } from "./utils/get-interface-info.util";
-import { getRouteInfo } from "./utils/get-route-info.util";
+import { IEnumInfo } from "../interfaces/enum-info.interface";
+import { IInterfaceInfo } from "../interfaces/interface-info.interface";
+import { IRouteInfo } from "../interfaces/route-info.interface";
+import { findBody } from "./find-body.util";
+import { getEnumInfo } from "./get-enum-info.util";
+import { getInterfaceInfo } from "./get-interface-info.util";
+import { getRouteInfo } from "./get-route-info.util";
 
 export async function getAllTypeScriptFilesAsync(
   dirPath: string,
