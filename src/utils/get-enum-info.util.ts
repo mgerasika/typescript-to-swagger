@@ -1,5 +1,6 @@
 import { IEnumInfo } from "../enum-info.interface";
 import { EType } from "../type.enum";
+import { makeId } from "./make-id.util";
 
 export function getEnumInfo(
   fileContent: string,
@@ -11,22 +12,29 @@ export function getEnumInfo(
 
   while ((match = regex.exec(fileContent)) !== null) {
     const enumName = match[1];
-    const memberRegex = /\s*(\w+)\s*=\s*(.*?),?\s*/g;
-    const membersList = [];
 
-    let memberMatch: RegExpExecArray | null;
+    let data =
+      "{" +
+      match[2]
+        .replace(/\b(\w+)\b\s*=\s*/g, '"$1":')
+        .replace(/;/g, ",")
+        .replace(/\s/g, "") +
+      "}";
+    data = data.replace(/,}/g, "}");
 
-    while ((memberMatch = memberRegex.exec(match[2])) !== null) {
-      const memberName = memberMatch[1];
-      const memberValue = memberMatch[2];
-      membersList.push({ name: memberName, value: memberValue });
+    try {
+      data = JSON.parse(data);
+    } catch {
+      console.error("parse error ", data);
     }
 
     return {
       name: enumName,
+      id: makeId(filePath, enumName),
+      content: fileContent,
       type: EType.enum,
-      path: filePath,
-      members: membersList,
+      filePath: filePath,
+      data: data,
     };
   }
 }

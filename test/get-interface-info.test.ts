@@ -6,7 +6,7 @@ describe("get-interface-info", () => {
   it("default", () => {
     expect(getInterfaceInfo("interface A {}", "")).toMatchObject({
       name: "A",
-      properties: [],
+      data: {},
     } as Partial<IInterfaceInfo>);
   });
 
@@ -15,12 +15,9 @@ describe("get-interface-info", () => {
       getInterfaceInfo("interface A {firstName:string;}", "")
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "firstName",
-          type: "string",
-        },
-      ],
+      data: {
+        firstName: "string",
+      },
     } as Partial<IInterfaceInfo>);
   });
 
@@ -29,12 +26,9 @@ describe("get-interface-info", () => {
       getInterfaceInfo("interface A {firstName:string}", "")
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "firstName",
-          type: "string",
-        },
-      ],
+      data: {
+        firstName: "string",
+      },
     } as Partial<IInterfaceInfo>);
   });
 
@@ -43,24 +37,18 @@ describe("get-interface-info", () => {
       getInterfaceInfo("interface A {firstName:string,}", "")
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "firstName",
-          type: "string",
-        },
-      ],
+      data: {
+        firstName: "string",
+      },
     } as Partial<IInterfaceInfo>);
 
     expect(
       getInterfaceInfo("interface A {firstName:string;}", "")
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "firstName",
-          type: "string",
-        },
-      ],
+      data: {
+        firstName: "string",
+      },
     } as Partial<IInterfaceInfo>);
   });
 
@@ -69,16 +57,10 @@ describe("get-interface-info", () => {
       getInterfaceInfo("interface A {firstName:string,lastName:string}", "")
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "firstName",
-          type: "string",
-        },
-        {
-          name: "lastName",
-          type: "string",
-        },
-      ],
+      data: {
+        firstName: "string",
+        lastName: "string",
+      },
     } as Partial<IInterfaceInfo>);
   });
 
@@ -96,16 +78,10 @@ describe("get-interface-info", () => {
       )
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "firstName",
-          type: "string",
-        },
-        {
-          name: "lastName",
-          type: "string",
-        },
-      ],
+      data: {
+        firstName: "string",
+        lastName: "string",
+      },
     } as Partial<IInterfaceInfo>);
   });
 
@@ -114,12 +90,9 @@ describe("get-interface-info", () => {
       getInterfaceInfo("interface A {params:{id:string}}", "")
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "params",
-          type: "{id:string}",
-        },
-      ],
+      data: {
+        params: { id: "string" },
+      },
     } as Partial<IInterfaceInfo>);
   });
   it("with nested object multiple properties", () => {
@@ -127,12 +100,9 @@ describe("get-interface-info", () => {
       getInterfaceInfo("interface A {params:{id:string,id2:string}}", "")
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "params",
-          type: "{id:string,id2:string}",
-        },
-      ],
+      data: {
+        params: { id: "string", id2: "string" },
+      },
     } as Partial<IInterfaceInfo>);
   });
 
@@ -150,12 +120,9 @@ describe("get-interface-info", () => {
       )
     ).toMatchObject({
       name: "A",
-      properties: [
-        {
-          name: "params",
-          type: "{id:string}",
-        },
-      ],
+      data: {
+        params: { id: "string" },
+      },
     } as Partial<IInterfaceInfo>);
   });
 });

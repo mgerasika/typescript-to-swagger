@@ -1,8 +1,10 @@
 import { EType } from "./type.enum";
 
 export interface IEnumInfo {
+  id: string;
   name: string;
-  path: string;
+  filePath: string;
   type: EType;
-  members: Array<{ name: string; value: string }>;
+  content: string;
+  data: any;
 }

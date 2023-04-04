@@ -1,6 +1,7 @@
 import { IInterfaceInfo } from "../interface-info.interface";
 import { EType } from "../type.enum";
 import { getInterfaceProperties } from "./get-interface-properties.util";
+import { makeId } from "./make-id.util";
 
 export function getInterfaceInfo(
   interfaceContent: string,
@@ -16,10 +17,11 @@ export function getInterfaceInfo(
 
     return {
       name: interfaceName,
+      id: makeId(filePath, interfaceName),
       content: interfaceContent,
       type: EType.interface,
-      path: filePath,
-      properties: getInterfaceProperties(interfaceContent) || [],
+      filePath: filePath,
+      data: getInterfaceProperties(interfaceContent) || [],
     };
   }
 }

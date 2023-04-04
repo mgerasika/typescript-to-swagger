@@ -1,10 +1,10 @@
-import { IPropertyInfo } from "./property-info.interface";
 import { EType } from "./type.enum";
 
 export interface IInterfaceInfo {
+  id: string;
   name: string;
-  path: string;
+  filePath: string;
   type: EType;
   content: string;
-  properties: Array<IPropertyInfo>;
+  data: any;
 }

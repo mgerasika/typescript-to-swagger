@@ -1,9 +1,11 @@
 import * as fs from "fs";
 import { IEnumInfo } from "./enum-info.interface";
 import { IInterfaceInfo } from "./interface-info.interface";
+import { IRouteInfo } from "./route-info.interface";
 import { findBody } from "./utils/find-body.util";
 import { getEnumInfo } from "./utils/get-enum-info.util";
 import { getInterfaceInfo } from "./utils/get-interface-info.util";
+import { getRouteInfo } from "./utils/get-route-info.util";
 
 export async function getAllTypeScriptFilesAsync(
   dirPath: string,
@@ -34,14 +36,13 @@ export async function getAllTypeScriptFilesFromMultipleDirectoriesAsync(
   ).then((data) => data.flat());
 }
 
-export async function findAllEnumsInFileAsync(
+export function findAllEnumsInFile(
+  fileContent: string,
   filePath: string
-): Promise<Array<IEnumInfo>> {
-  const fileContent = await fs.promises.readFile(filePath, "utf-8");
-
+): Array<IEnumInfo> {
   const res: IEnumInfo[] = [];
 
-  findBody("enum", fileContent).forEach((interfaceBody) => {
+  findBody({ type: "enum", fileContent }).forEach((interfaceBody) => {
     const info = getEnumInfo(interfaceBody, filePath);
     if (info) {
       res.push(info);
@@ -51,15 +52,35 @@ export async function findAllEnumsInFileAsync(
   return res;
 }
 
-export async function findAllInterfacesInFileAsync(
+export function findAllInterfacesInFile(
+  fileContent: string,
   filePath: string
-): Promise<Array<IInterfaceInfo>> {
-  const fileContent = await fs.promises.readFile(filePath, "utf-8");
-
+): Array<IInterfaceInfo> {
   const res: IInterfaceInfo[] = [];
 
-  findBody("interface", fileContent).forEach((interfaceBody) => {
+  findBody({ type: "interface", fileContent }).forEach((interfaceBody) => {
     const info = getInterfaceInfo(interfaceBody, filePath);
+    if (info) {
+      res.push(info);
+    }
+  });
+
+  return res;
+}
+
+export function findAllRoutesInFile(
+  fileContent: string,
+  filePath: string
+): Array<IRouteInfo> {
+  const res: IRouteInfo[] = [];
+
+  findBody({
+    type: "app.",
+    fileContent,
+    START_SYMBOL: "(",
+    END_SYMBOL: ")",
+  }).forEach((interfaceBody) => {
+    const info = getRouteInfo(interfaceBody, filePath);
     if (info) {
       res.push(info);
     }
