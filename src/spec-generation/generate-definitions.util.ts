@@ -97,11 +97,17 @@ export const generateDefinition = ({
         return {
             [interfaceInfo.name]: {
                 type: 'object',
+                required: interfaceInfo.data
+                    ? Object.keys(interfaceInfo.data)
+                          .map((key) => (!key.includes('?') ? key : undefined))
+                          .filter((f) => f)
+                    : undefined,
                 properties: interfaceInfo.data
                     ? Object.keys(interfaceInfo.data).reduce((acc, key) => {
+                          const name = key.replace('?', '');
                           return {
                               ...acc,
-                              [key]: {
+                              [name]: {
                                   type: getSpecTypeFromJsType(interfaceInfo.data[key]),
                               },
                           };

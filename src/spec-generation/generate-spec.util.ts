@@ -9,10 +9,14 @@ interface IProps {
 
 export const generateSpecAsync = ({ dir }: IProps): Promise<any> => {
     return getSpecInfoAsync({ dir }).then((allSpec) => {
-        const paths = allSpec.routes.reduce((acc, route) => {
+        const paths = allSpec.routes.reduce((acc: any, route) => {
+            if (acc[route.url] && acc[route.url][route.httpMethod]) {
+                throw `This url already used ${route.httpMethod} ${route.url}. File name = ${route.filePath}`;
+            }
             return {
                 ...acc,
                 [route.url]: {
+                    ...(acc && acc[route.url] ? acc[route.url] : {}),
                     [route.httpMethod]: {
                         operationId: '',
                         summary: '',
