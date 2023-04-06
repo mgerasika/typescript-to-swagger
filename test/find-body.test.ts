@@ -3,8 +3,8 @@ import { findBody } from '../src/utils/find-body.util';
 
 describe('find-interface-body', () => {
     it('default', () => {
-        expect(findBody({ startWord: 'interface', fileContent: 'interface A {}' })).toEqual(['interface A {}']);
-        expect(findBody({ startWord: 'interface', fileContent: 'interface A{}' })).toEqual(['interface A{}']);
+        expect(findBody({ startWord: 'interface', fileContent: 'example a interface A {}' })).toEqual(['interface A {}']);
+        expect(findBody({ startWord: 'interface', fileContent: 'example b interface A{}' })).toEqual(['interface A{}']);
         expect(
             findBody({
                 startWord: 'interface',

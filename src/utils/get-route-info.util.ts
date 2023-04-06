@@ -9,7 +9,7 @@ export function getRouteInfo(content: string, filePath: string): IRouteInfo | un
 	res.send("Hello world");
 	});
 */
-    const REGEXP_APP = /app\.(.+?)\((.+?)\,\s*?\((.*?)\)/g;
+    const REGEXP_APP = /app\.(.+?)\((.+?)\,[\s\w]*?\((.*?)\)/g;
 
     while ((match = REGEXP_APP.exec(content)) !== null) {
         const httpMethod = match[1];
