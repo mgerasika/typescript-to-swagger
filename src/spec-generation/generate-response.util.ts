@@ -2,7 +2,7 @@ import { getGenericTypes } from '../utils/get-generic-types.util';
 import { IInfo } from '../interfaces/info.interface';
 import { IRouteInfo } from '../interfaces/route-info.interface';
 import { isArray } from '../utils/is-array.util';
-import { isJsType } from '../utils/is-js-type.util';
+import { isSimpleType } from '../utils/is-simple-type.util';
 import { getSpecTypeFromJsType } from '../utils/get-spec-type-from-js-type.util';
 
 interface IProps {
@@ -69,7 +69,7 @@ export const generateSuccessResponse = ({ name }: { name: string }) => {
                     },
                 },
             };
-        } else if (isJsType(name)) {
+        } else if (isSimpleType(name)) {
             return {
                 '200': {
                     content: {
@@ -119,7 +119,7 @@ export const generateErrorResponse = ({ name }: { name: string }) => {
                     },
                 },
             };
-        } else if (isJsType(name)) {
+        } else if (isSimpleType(name)) {
             return {
                 '400': {
                     content: {

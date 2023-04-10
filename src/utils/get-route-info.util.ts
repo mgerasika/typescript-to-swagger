@@ -34,7 +34,7 @@ export function getRouteInfo(content: string, filePath: string): IRouteInfo | un
                 .replace(/toString\(\)/, '')
                 .replace(/\./g, '/');
 
-            const [, ...rest] = requestUrl.split('/');
+            const [, ...rest] = requestUrl.split('/').map((url) => formatUrlName(url));
             requestUrl = rest.join('/');
         }
         return {
@@ -47,3 +47,10 @@ export function getRouteInfo(content: string, filePath: string): IRouteInfo | un
         };
     }
 }
+
+const formatUrlName = (str: string): string => {
+    if (str === 'index') {
+        return '';
+    }
+    return str.toString().replace(/([A-Z])/g, (str) => '-' + str.toLowerCase());
+};

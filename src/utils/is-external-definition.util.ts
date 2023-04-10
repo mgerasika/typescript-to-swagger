@@ -1,8 +1,8 @@
-import { isJsType } from './is-js-type.util';
+import { isSimpleType } from './is-simple-type.util';
 
 export const isExternalDefinition = (data: any): boolean => {
     if (typeof data === 'string') {
-        if (!isJsType(data)) {
+        if (!isSimpleType(data)) {
             return true;
         }
     }
