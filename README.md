@@ -1,41 +1,12 @@
-## Find all interfaces into project directory and return information about it.
+## Generate swagger file automaticaly from typescript for express node.js.
+### No need any js-doc comments for swagger documentation! Only typescript interfaces!
+![image](https://user-images.githubusercontent.com/10614750/230362209-c70a62e4-02aa-4d02-a405-2c665d71b3ff.png)
 
-### Example Interface
-
+## Very simple usage
 ```
-interface IUser {
-	firstName: string;
-	isActive: boolean;
-}
-```
-
-### Usage example
-
-```
-getInterfaceInfo({ dir: ['./src'] }).then((res) => {
-    console.log(JSON.stringify(res.interfaces, null, 2));
+generateSpecAsync({ dir: ['./src/controller', './src/enum', './src/model'] }).then((spec) => {
+    fs.writeFileSync(path.resolve('../spec.json'), JSON.stringify(spec));
 });
 ```
 
-### Response
 
-```
-[...
-	{
-		"name": "IUserDto",
-		"type": "interface",
-		"path": "./src/model/user.dto.ts",
-		"properties": [
-			{
-				"name": "firstName",
-				"type": "string"
-			},
-			{
-				"name": "isActive",
-				"type": "boolean"
-			}
-		]
-	},
-...
-]
-```
