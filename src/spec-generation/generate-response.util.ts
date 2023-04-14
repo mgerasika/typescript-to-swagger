@@ -33,7 +33,8 @@ export const generateResponse = ({ route, allSpec }: IProps) => {
     const responseInterface = allSpec.interfaces.find((i) => i.id === route.responseInterfaceId);
 
     if (responseInterface?.extendedInterfaces?.length) {
-        const genericArguments = getGenericTypes(responseInterface.extendedInterfaces[0]);
+		const { fields: genericArguments } = getGenericTypes(responseInterface.extendedInterfaces[0]);
+        // console.log('genericArguments', responseInterface.extendedInterfaces[0], genericArguments);
         if (genericArguments?.length) {
             const [successName, errorName] = genericArguments;
             const success = generateSuccessResponse({ name: successName });
@@ -55,6 +56,19 @@ export const generateSuccessResponse = ({ name }: { name: string }) => {
         }
         if (isArray(name)) {
             const arrayItemName = name.replace('[]', '');
+            if (isSimpleType(arrayItemName)) {
+                return {
+                    '200': {
+                        content: {
+                            'application/json': {
+                                schema: {
+                                    type: getSpecTypeFromJsType(name),
+                                },
+                            },
+                        },
+                    },
+                };
+            }
             return {
                 '200': {
                     content: {

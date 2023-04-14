@@ -1,7 +1,7 @@
 export const indexOf = (
   fileContent: string,
   symbol: string,
-  index: number
+  count: number
 ): number => {
   let i = 0;
   const tmp = fileContent;
@@ -9,7 +9,7 @@ export const indexOf = (
   let prevPosition = 0;
   do {
     resIndex = tmp.indexOf(symbol, prevPosition);
-    if (i === index) {
+    if (i === count) {
       return resIndex;
     }
     i++;

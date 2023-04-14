@@ -1,16 +1,21 @@
-import { expect } from "@jest/globals";
-import { getInterfaceProperties } from "../src/utils/get-interface-properties.util";
+import { expect } from '@jest/globals';
+import { getInterfaceProperties } from '../src/utils/get-interface-properties.util';
 
-describe("get-interface-properties", () => {
-  it("default", () => {
-    expect(getInterfaceProperties("{x:number}")).toEqual({ x: "number" });
+describe('get-interface-properties', () => {
+    it('default', () => {
+        expect(getInterfaceProperties('{x:number}')).toEqual({ x: 'number' });
 
-    expect(getInterfaceProperties("{x?:number}")).toEqual({ "x?": "number" });
+        expect(getInterfaceProperties('{x?:number}')).toEqual({ 'x?': 'number' });
 
-    expect(getInterfaceProperties("{x:number,y:number;z:number }")).toEqual({
-      x: "number",
-      y: "number",
-      z: "number",
+        expect(getInterfaceProperties('{x?:number[]}')).toEqual({ 'x?': 'number[]' });
+
+        expect(getInterfaceProperties('{x?:IColor<string>[]}')).toEqual({ 'x?': 'IColor<string>[]' });
+        expect(getInterfaceProperties('{x?:IColor<string>}')).toEqual({ 'x?': 'IColor<string>' });
+
+        expect(getInterfaceProperties('{x:number,y:number;z:number }')).toEqual({
+            x: 'number',
+            y: 'number',
+            z: 'number',
+        });
     });
-  });
 });

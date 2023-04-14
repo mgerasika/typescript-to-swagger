@@ -37,4 +37,46 @@ describe('find-interface-body', () => {
             }),
         ).toEqual(['interface A extend string {}']);
     });
+
+    it('find generic body', () => {
+        expect(
+            findBody({
+                startWord: '<',
+                START_SYMBOL: '<',
+                END_SYMBOL: '>',
+                fileContent: 'Color<string>',
+            }),
+        ).toEqual(['<string>']);
+    });
+
+    it('find nested generic body', () => {
+        expect(
+            findBody({
+                startWord: '<',
+                START_SYMBOL: '<',
+                END_SYMBOL: '>',
+                fileContent: 'Color<string<number>>',
+            }),
+        ).toEqual(['<string<number>>']);
+    });
+
+    it('find body when omit', () => {
+        expect(
+            findBody({
+                startWord: '<',
+                START_SYMBOL: '<',
+                END_SYMBOL: '>',
+                fileContent: 'Omit<B<number,number,number>>',
+            }),
+        ).toEqual(['<B<number,number,number>>']);
+
+        expect(
+            findBody({
+                startWord: '<',
+                START_SYMBOL: '<',
+                END_SYMBOL: '>',
+                fileContent: 'B<number,number,number>',
+            }),
+        ).toEqual(['<number,number,number>']);
+    });
 });
