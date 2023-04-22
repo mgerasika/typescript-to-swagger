@@ -42,7 +42,7 @@ const addSchemasRecursive = ({
     interfaceName: string | undefined;
     result: any;
 }) => {
-	const { fields: genericArguments } = getGenericTypes(interfaceName);
+    const { fields: genericArguments } = getGenericTypes(interfaceName);
 
     interfaceName = getInterfaceName(interfaceName);
     if (genericArguments?.length) {
@@ -91,7 +91,7 @@ const getFieldsRecursive = ({
     interfaceName: string | undefined;
     fields: any;
 }) => {
-    const excludeFields = getOmitFields(interfaceName);
+    const omitFields = getOmitFields(interfaceName);
     const pickFields = getPickFields(interfaceName);
 
     interfaceName = getInterfaceName(interfaceName);
@@ -117,15 +117,17 @@ const getFieldsRecursive = ({
                 fields = { ...newFields, ...interfaceInfo.data };
             }
         }
-        if (excludeFields.fields?.length) {
+        if (omitFields.fields?.length) {
             Object.keys(fields).forEach((fieldName) => {
-                if (excludeFields.fields?.includes(fieldName)) {
+                fieldName = fieldName.replace('?', '');
+                if (omitFields.fields?.includes(fieldName)) {
                     delete fields[fieldName];
                 }
             });
         }
         if (pickFields.fields?.length) {
             Object.keys(fields).forEach((fieldName) => {
+                fieldName = fieldName.replace('?', '');
                 if (!pickFields.fields?.includes(fieldName)) {
                     delete fields[fieldName];
                 }
