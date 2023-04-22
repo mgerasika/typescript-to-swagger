@@ -17,7 +17,9 @@ export const generateDefinitions = ({ allSpec }: IProps) => {
         const requestInterface = allSpec.interfaces.find((i) => i.id === route.requestInterfaceId);
 
         const body = requestInterface?.data?.body;
-        result = addSchemasRecursive({ result: result, interfaceName: body, allSpec });
+        if (typeof body === 'string') {
+            result = addSchemasRecursive({ result: result, interfaceName: body, allSpec });
+        }
 
         const responseInterface = allSpec.interfaces.find((i) => i.id === route.responseInterfaceId);
         if (responseInterface && responseInterface.extendedInterfaces?.length) {
