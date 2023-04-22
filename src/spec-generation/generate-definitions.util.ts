@@ -119,16 +119,16 @@ const getFieldsRecursive = ({
         }
         if (omitFields.fields?.length) {
             Object.keys(fields).forEach((fieldName) => {
-                fieldName = fieldName.replace('?', '');
-                if (omitFields.fields?.includes(fieldName)) {
+                const newFieldName = fieldName.replace('?', '');
+                if (omitFields.fields?.includes(newFieldName)) {
                     delete fields[fieldName];
                 }
             });
         }
         if (pickFields.fields?.length) {
             Object.keys(fields).forEach((fieldName) => {
-                fieldName = fieldName.replace('?', '');
-                if (!pickFields.fields?.includes(fieldName)) {
+                const newFieldName = fieldName.replace('?', '');
+                if (!pickFields.fields?.includes(newFieldName)) {
                     delete fields[fieldName];
                 }
             });
