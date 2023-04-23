@@ -1,9 +1,12 @@
-export function getClassProperties(interfaceContent: string): any {
+export function getClassProperties(classContent: string): any {
     let match: RegExpExecArray | null;
+
+    classContent = removeMethodsFromClass(classContent);
+    classContent = removeDecoratorsFromClass(classContent);
 
     const REGEXP_BODY = /\{([\s\S\w\W]*)\}/g;
 
-    while ((match = REGEXP_BODY.exec(interfaceContent)) !== null) {
+    while ((match = REGEXP_BODY.exec(classContent)) !== null) {
         // eslint-disable-next-line no-useless-escape
         const withoutComments = match[1].replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
         let data =
@@ -22,4 +25,14 @@ export function getClassProperties(interfaceContent: string): any {
             console.error('parse error ' + data);
         }
     }
+}
+
+function removeMethodsFromClass(classBody: string): string {
+    const regex = /(?<!interface\s)\b\w+\s*\([^)]*\)\s*(:\s*\w+\s*)?{\s*[\s\S]*?}\s*/g;
+    return classBody.replace(regex, '');
+}
+
+function removeDecoratorsFromClass(classBody: string): string {
+    const regex = /@.+?\)/g;
+    return classBody.replace(regex, '');
 }
