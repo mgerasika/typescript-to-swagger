@@ -8,6 +8,7 @@ import {
     findAllInterfacesInFile,
     findAllEnumsInFile,
     findAllRoutesInFile,
+    findAllClassesInFile,
 } from './utils';
 
 interface IProps {
@@ -26,9 +27,10 @@ export const getSpecInfoAsync = ({ dir }: IProps): Promise<IInfo> => {
                         const fileContent = await fs.promises.readFile(filePath, 'utf-8');
 
                         const newInterfaces = findAllInterfacesInFile(fileContent, filePath);
+                        const newClasses = findAllClassesInFile(fileContent, filePath);
                         const newEnums = findAllEnumsInFile(fileContent, filePath);
                         const newRoutes = findAllRoutesInFile(fileContent, filePath);
-                        interfaces = [...interfaces, ...newInterfaces];
+                        interfaces = [...interfaces, ...newInterfaces, ...newClasses];
                         enums = [...enums, ...newEnums];
                         routes = [...routes, ...newRoutes];
                         return Promise.resolve();

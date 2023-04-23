@@ -6,6 +6,7 @@ import { findBody } from './find-body.util';
 import { getEnumInfo } from './get-enum-info.util';
 import { getInterfaceInfo } from './get-interface-info.util';
 import { getRouteInfo } from './get-route-info.util';
+import { getClassInfo } from './get-class-info.util';
 
 export async function getAllTypeScriptFilesAsync(dirPath: string, arrayOfFiles: string[] = []): Promise<string[]> {
     const files = await fs.promises.readdir(dirPath);
@@ -47,6 +48,19 @@ export function findAllInterfacesInFile(fileContent: string, filePath: string): 
 
     findBody({ startWord: 'interface', fileContent }).forEach((interfaceBody) => {
         const info = getInterfaceInfo(interfaceBody, filePath);
+        if (info) {
+            res.push(info);
+        }
+    });
+
+    return res;
+}
+
+export function findAllClassesInFile(fileContent: string, filePath: string): Array<IInterfaceInfo> {
+    const res: IInterfaceInfo[] = [];
+
+    findBody({ startWord: 'class', fileContent }).forEach((interfaceBody) => {
+        const info = getClassInfo(interfaceBody, filePath);
         if (info) {
             res.push(info);
         }

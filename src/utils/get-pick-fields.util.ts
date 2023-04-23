@@ -3,11 +3,11 @@ import { findBody } from "./find-body.util";
 interface IReturn {
   fields: string[] | undefined;
 }
-export function getPickFields(interfaceName: string | undefined): IReturn {
+export function getPickFields(interfaceBody: string | undefined): IReturn {
   let fields: string[] | undefined = undefined;
-  if (interfaceName) {
+  if (interfaceBody) {
     const pickBody = findBody({
-      fileContent: interfaceName,
+      fileContent: interfaceBody,
       startWord: "Pick",
       START_SYMBOL: "<",
       END_SYMBOL: ">",

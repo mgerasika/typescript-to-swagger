@@ -3,11 +3,11 @@ import { findBody } from "./find-body.util";
 interface IReturn {
   fields: string[] | undefined;
 }
-export function getOmitFields(interfaceName: string | undefined): IReturn {
+export function getOmitFields(interfaceBody: string | undefined): IReturn {
   let fields: string[] | undefined = undefined;
-  if (interfaceName) {
+  if (interfaceBody) {
     const omitBody = findBody({
-      fileContent: interfaceName,
+      fileContent: interfaceBody,
       startWord: "Omit",
       START_SYMBOL: "<",
       END_SYMBOL: ">",

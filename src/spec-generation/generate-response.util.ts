@@ -1,4 +1,4 @@
-import { getGenericTypes } from '../utils/get-generic-types.util';
+import { getGenericArguments } from '../utils/get-generic-arguments.util';
 import { IInfo } from '../interfaces/info.interface';
 import { IRouteInfo } from '../interfaces/route-info.interface';
 import { isArray } from '../utils/is-array.util';
@@ -33,7 +33,7 @@ export const generateResponse = ({ route, allSpec }: IProps) => {
     const responseInterface = allSpec.interfaces.find((i) => i.id === route.responseInterfaceId);
 
     if (responseInterface?.extendedInterfaces?.length) {
-		const { fields: genericArguments } = getGenericTypes(responseInterface.extendedInterfaces[0]);
+        const { genericArguments: genericArguments } = getGenericArguments(responseInterface.extendedInterfaces[0]);
         // console.log('genericArguments', responseInterface.extendedInterfaces[0], genericArguments);
         if (genericArguments?.length) {
             const [successName, errorName] = genericArguments;
