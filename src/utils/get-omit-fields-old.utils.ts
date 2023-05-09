@@ -1,7 +1,6 @@
 import { IInfo } from '../interfaces/info.interface';
 import { findBody } from './find-body.util';
 
-
 export function getOmitFieldsOld({
     interfaceName,
     allSpec,

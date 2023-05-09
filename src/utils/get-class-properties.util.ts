@@ -3,6 +3,7 @@ export function getClassProperties(classContent: string): any {
 
     classContent = removeMethodsFromClass(classContent);
     classContent = removeDecoratorsFromClass(classContent);
+    classContent = removeAllCommentsFromClass(classContent);
 
     const REGEXP_BODY = /\{([\s\S\w\W]*)\}/g;
 
@@ -22,7 +23,7 @@ export function getClassProperties(classContent: string): any {
         try {
             return JSON.parse(data);
         } catch {
-            console.error('parse error ' + data);
+            console.error('parse error in get-class ' + data);
         }
     }
 }
@@ -33,6 +34,11 @@ function removeMethodsFromClass(classBody: string): string {
 }
 
 function removeDecoratorsFromClass(classBody: string): string {
-    const regex = /@.+?\)/g;
+    const regex = /@[a-zA-Z0-9_]+(\([^\)]*\))?(\s*)/g;
+    return classBody.replace(regex, '');
+}
+
+function removeAllCommentsFromClass(classBody: string): string {
+    const regex = /\/\/.*|\/\*[\s\S]*?\*\//g;
     return classBody.replace(regex, '');
 }

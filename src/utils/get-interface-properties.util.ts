@@ -19,7 +19,7 @@ export function getInterfaceProperties(interfaceContent: string): any {
         try {
             return JSON.parse(data);
         } catch {
-            console.error('parse error ' + data);
+            console.error('parse error in get-interface-props ' + data);
         }
     }
 }

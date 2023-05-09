@@ -35,7 +35,7 @@ export function getRouteInfo(content: string, filePath: string): IRouteInfo | un
                 .replace(/toString\(\)/, '')
                 .replace(/\./g, '/');
 
-            const [, ...rest] = requestUrl.split('/').map((url) => formatUrlName(url));
+            const [, ...rest] = requestUrl.split('/').map((url) => (url.includes('{') ? url : formatUrlName(url)));
             requestUrl = rest.join('/');
         }
         return {

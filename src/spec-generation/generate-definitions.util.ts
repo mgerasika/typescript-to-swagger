@@ -7,6 +7,7 @@ import { isExternalDefinition } from '../utils/is-external-definition.util';
 import { getInterfaceName } from '../utils/get-interface-name.util';
 import { getOmitFields } from '../utils/get-omit-fields.utils';
 import { getPickFields } from '../utils/get-pick-fields.util';
+import { isJsSubObject } from '../utils/is-js-sub-object.util';
 
 interface IProps {
     allSpec: IInfo;
@@ -16,14 +17,11 @@ export const generateDefinitions = ({ allSpec }: IProps) => {
     return allSpec.routes.reduce((result, route) => {
         const requestInterface = allSpec.interfaces.find((i) => i.id === route.requestInterfaceId);
 
-        const body = requestInterface?.data?.body;
-        if (typeof body === 'string') {
-            result = addSchemasRecursive({
-                result: result,
-                interfaceName: body,
-                allSpec,
-            });
-        }
+        result = addSchemasRecursive({
+            result: result,
+            inputStringOrData: requestInterface?.data?.body,
+            allSpec,
+        });
 
         const responseInterface = allSpec.interfaces.find((i) => i.id === route.responseInterfaceId);
         if (responseInterface && responseInterface.extendedInterfaces?.length) {
@@ -33,7 +31,7 @@ export const generateDefinitions = ({ allSpec }: IProps) => {
                 if (argumentType) {
                     result = addSchemasRecursive({
                         result,
-                        interfaceName: argumentType || '',
+                        inputStringOrData: argumentType,
                         allSpec,
                     });
                 }
@@ -43,59 +41,79 @@ export const generateDefinitions = ({ allSpec }: IProps) => {
     }, {});
 };
 
+// Example input
+// {
+//     body: IPostUser;
+//     color: string;
+//     metadata: { subObject: IPostUser }
+// }
+// find all schemas and add to output definitions
 const addSchemasRecursive = ({
-    interfaceName,
+    inputStringOrData,
     result,
     allSpec,
 }: {
     allSpec: IInfo;
-    interfaceName: string | undefined;
+    inputStringOrData: any;
     result: any;
 }) => {
-    const { genericArguments: genericArguments } = getGenericArguments(interfaceName);
-
-    interfaceName = getInterfaceName(interfaceName);
-    if (genericArguments?.length) {
-        genericArguments?.forEach((genericArgument) => {
-            if (isExternalDefinition(genericArgument)) {
-                result = addSchemasRecursive({
-                    allSpec,
-                    result,
-                    interfaceName: genericArgument,
-                });
-            }
+    if (isJsSubObject(inputStringOrData)) {
+        Object.values(inputStringOrData).forEach((value) => {
+            result = addSchemasRecursive({ allSpec, inputStringOrData: value, result });
         });
-    }
+    } else if (typeof inputStringOrData === 'string' && isExternalDefinition(inputStringOrData)) {
+        const { genericArguments: genericArguments } = getGenericArguments(inputStringOrData);
 
-    if (isExternalDefinition(interfaceName)) {
-        const interfaceInfo = allSpec.interfaces.find((i) => i.name === interfaceName);
-        if (interfaceInfo) {
-            const newData = getFieldsRecursive({
-                allSpec,
-                interfaceName: interfaceName,
-                fields: interfaceInfo.data,
-            });
-            interfaceInfo.data = { ...newData, ...interfaceInfo.data };
-
-            result = { ...result, ...generateDefinition({ interfaceInfo }) };
-            Object.values(interfaceInfo.data).forEach((value) => {
-                value = value?.toString().replace('[]', '');
-                if (isExternalDefinition(value)) {
+        inputStringOrData = getInterfaceName(inputStringOrData);
+        if (genericArguments?.length) {
+            genericArguments?.forEach((genericArgument) => {
+                if (isExternalDefinition(genericArgument)) {
                     result = addSchemasRecursive({
-                        interfaceName: value as string,
                         allSpec,
                         result,
+                        inputStringOrData: genericArgument,
                     });
                 }
             });
+        }
+
+        const interfaceInfo = allSpec.interfaces.find((i) => i.name === inputStringOrData);
+        if (interfaceInfo) {
+            // replace omit/pick fields if need
+            const newFields = getFieldsRecursive({
+                allSpec,
+                interfaceName: inputStringOrData,
+                fields: interfaceInfo.data,
+            });
+            interfaceInfo.data = newFields;
+
+            result = { ...result, ...generateDefinition({ interfaceInfo }) };
+        }
+
+        // Try find another related interfaces
+        if (interfaceInfo) {
+            Object.values(interfaceInfo.data).forEach((value) => {
+                if (isJsSubObject(value)) {
+                    result = addSchemasRecursive({ allSpec, inputStringOrData: value, result });
+                } else {
+                    value = value?.toString().replace('[]', '');
+                    if (isExternalDefinition(value)) {
+                        result = addSchemasRecursive({
+                            inputStringOrData: value as string,
+                            allSpec,
+                            result,
+                        });
+                    }
+                }
+            });
         } else {
-            const enumInfo = allSpec.enums.find((i) => i.name === interfaceName);
+            const enumInfo = allSpec.enums.find((i) => i.name === inputStringOrData);
             if (enumInfo) {
                 result = { ...result, ...generateDefinition({ enumInfo: enumInfo }) };
                 Object.values(enumInfo.data).forEach((value) => {
                     if (isExternalDefinition(value)) {
                         result = addSchemasRecursive({
-                            interfaceName: value as string,
+                            inputStringOrData: value as string,
                             allSpec,
                             result,
                         });
@@ -213,23 +231,7 @@ export const generateDefinition = ({
     if (interfaceInfo) {
         return {
             [interfaceInfo.name]: {
-                type: 'object',
-                required: interfaceInfo.data
-                    ? Object.keys(interfaceInfo.data)
-                          .map((key) => (!key.includes('?') ? key : undefined))
-                          .filter((f) => f)
-                    : undefined,
-                properties: interfaceInfo.data
-                    ? Object.keys(interfaceInfo.data).reduce((acc, key) => {
-                          const name = key.replace('?', '');
-                          return {
-                              ...acc,
-                              [name]: {
-                                  type: getSpecTypeFromJsType(interfaceInfo.data[key]),
-                              },
-                          };
-                      }, {})
-                    : undefined,
+                ...generateProperties(interfaceInfo.data),
             },
         };
     }
@@ -241,4 +243,35 @@ export const generateDefinition = ({
             },
         };
     }
+};
+
+export const generateProperties = (data: any): any => {
+    if (!data) {
+        return undefined;
+    }
+    return {
+        type: 'object',
+        required: data
+            ? Object.keys(data)
+                  .map((key) => (!key.includes('?') ? key : undefined))
+                  .filter((f) => f)
+            : undefined,
+        properties: Object.keys(data).reduce((acc, key) => {
+            const name = key.replace('?', '');
+            const value = data[key];
+            const type = getSpecTypeFromJsType(value);
+            if (type === 'object') {
+                return {
+                    ...acc,
+                    [name]: generateProperties(value),
+                };
+            }
+            return {
+                ...acc,
+                [name]: {
+                    type,
+                },
+            };
+        }, {}),
+    };
 };

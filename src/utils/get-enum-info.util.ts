@@ -23,7 +23,7 @@ export function getEnumInfo(fileContent: string, filePath: string): IEnumInfo | 
         try {
             data = JSON.parse(data);
         } catch {
-            console.error('parse error ', data);
+            console.error('parse error in get-enum', data);
         }
 
         return {
