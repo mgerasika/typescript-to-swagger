@@ -15,6 +15,7 @@ export function getInterfaceProperties(interfaceContent: string): any {
                 .replace(/\s/g, '') +
             '}';
         data = data.replace(/,}/g, '}');
+        data = data.replace(/!/g, '');
 
         try {
             return JSON.parse(data);
