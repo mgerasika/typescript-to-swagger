@@ -34,6 +34,7 @@ function removeMethodsFromClass(classBody: string): string {
 }
 
 function removeDecoratorsFromClass(classBody: string): string {
+    // eslint-disable-next-line no-useless-escape
     const regex = /@[a-zA-Z0-9_]+(\([^\)]*\))?(\s*)/g;
     return classBody.replace(regex, '');
 }
