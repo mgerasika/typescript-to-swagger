@@ -26,7 +26,7 @@
         "typescript": "4.3.2",
         "lint-staged": "^11.1.1",
         "prettier": "2.3.2",
-        "husky": "^4.3.8",
+        "husky": "^7.0.0",
         "prettier-plugin-organize-imports": "^1.1.1"
     },
     "scripts": {
@@ -38,11 +38,6 @@
         "test": "jest --config=jest.config.js",
         "prettier": "prettier --config ./.prettierrc.js --check \"src/**/*{.ts,.tsx,*.js,*.json.*.babelrc}\" ",
         "prettier:fix": "npm run prettier -- --write"
-    },
-    "husky": {
-        "hooks": {
-            "pre-commit": "yarn lint-staged"
-        }
     },
     "lint-staged": {
         "**/*.{ts,tsx,js}": [
