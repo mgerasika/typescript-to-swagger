@@ -96,7 +96,7 @@ const addSchemasRecursive = ({
                 if (isJsSubObject(value)) {
                     result = addSchemasRecursive({ allSpec, inputStringOrData: value, result });
                 } else {
-                    value = value?.toString().replace('[]', '');
+                    value = String(value).toString().replace('[]', '');
                     if (isExternalDefinition(value)) {
                         result = addSchemasRecursive({
                             inputStringOrData: value as string,

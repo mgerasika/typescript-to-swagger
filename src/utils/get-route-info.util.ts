@@ -10,7 +10,7 @@ export function getRouteInfo(content: string, filePath: string): IRouteInfo | un
 	});
 */
     // eslint-disable-next-line no-useless-escape
-    const REGEXP_APP = /app\.(.+?)\((.+?)\,[\s\w]*?\((.*?)\)/g;
+    const REGEXP_APP = /app\.(.+?)\((.+?)\,.*\((.*?)\)/g;
 
     while ((match = REGEXP_APP.exec(content)) !== null) {
         const httpMethod = match[1];
